@@ -12,6 +12,35 @@
 #define STR_PASSED        ANSI_COLOR_GREEN "\xE2\x9C\x94 PASSED" ANSI_RESET_ALL
 #define STR_FAILED        ANSI_COLOR_RED "\xE2\x9C\x98 FAILED" ANSI_RESET_ALL
 
+test_result_t eval_assert_equals_int(
+        int int_1,
+        int int_2,
+        const char *func,
+        ...
+        )
+{
+  //Capture the message argument
+  va_list args;
+  va_start(args, func);
+  char *message = va_arg(args, char *);
+  va_end(args);
+
+  test_result_t *res = malloc(sizeof(test_result_t));
+  if (int_1 == int_2) {
+    res->str = STR_PASSED;
+    res->result = PASSED;
+    printf("[%s]:\t%s\n", func, STR_PASSED);
+  } else {
+    res->str = STR_FAILED;
+    res->result = FAILED;
+    printf("[%s]:\t%s\t\t'%d' not equals to '%d'. %s\n", func, STR_FAILED, int_1, int_2, message);
+//    assert(ptr);
+  }
+  return *res;
+}
+
+
+
 test_result_t eval_assert_equals_str(
     char *str_1, 
     char *str_2, 
